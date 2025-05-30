@@ -1,0 +1,14 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %} <link rel="stylesheet" href="{% static 'css/update_personalinfo.css' %}"> {% endblock css %}
+{% block body %}
+   <div class="container">
+    <h2>Personal Information</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Update</button>
+    </form>
+   </div>
+
+{% endblock body %}

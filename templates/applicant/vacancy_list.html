@@ -1,0 +1,60 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %} <link rel="stylesheet" href="{% static 'css/vacancy_list.css' %}">{% endblock css %}
+{% load static %}
+{% block body %}
+   <div class="container">
+    {% if vacancies %}
+        <h3>Applied Vacancy</h3>
+        <table class="table table-bordered">
+            <tr>
+                <th>S.N</th>
+                <th>Position</th>
+                <th>Level</th>
+                <th>Group</th>
+                <th>Cost</th>
+                <th>Status</th>
+               
+            </tr>
+            {% for vacancy in vacancies %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{vacancy.vacancy_position}}</td>
+                    <td>{{vacancy.vacancy_level}}</td>
+                    <td>{{vacancy.vacancy_group}}</td>
+                    <td>{{vacancy.payment_amount}}</td>
+                    <td>{{vacancy.vacancy_status}}</td>
+                    
+                </tr>
+               
+            {% endfor %}
+                <tr>
+                    <td colspan="4">Total Amount</td>
+                    <td colspan="5">{{ vacancy.total_amount }}</td>
+                </tr>
+        
+        </table>
+        <div class="payment-text">
+            <p>Payment Method & Instructions</p>
+            <ul>
+                <li>At first make payment by using either QR.</li>
+                <LI>After successfull payment, upload the online Voucher.</LI>
+            </ul>
+        </div>
+        <div class="payment text-center row gx-5 py-5">
+            <img src="{% static 'images/nabil_qr.jpg' %}" alt="nabil_qr" style="width:200px;height:200px;">
+            <img src="{% static 'images/esewa.png' %}" alt="esewa" style="width:200px;height:200px;">
+        </div>
+        <div class="make-payment py-5">
+            <a href="">Make Payment</a>
+        </div>
+
+
+    {% else %}
+        <h4 class="text-center mt-5">No Any Vacancy has been Applied.</h4>
+
+    {% endif %}
+       
+   </div>
+
+{% endblock body %}

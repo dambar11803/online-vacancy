@@ -1,0 +1,24 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %} <link rel="stylesheet" href="{% static 'css/personalinfo_detail.css' %}"> {% endblock css %}
+{% block body %}
+   <div class="container">
+    <h2>Applicant Information</h2>
+        <p><strong>First Name:</strong> {{ applicant.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ applicant.last_name }}</p>
+        <p><strong>Date of Birth:</strong> {{ applicant.dob }}</p>
+        <p><strong>Father's Name:</strong> {{ applicant.father_name }}</p>
+        <p><strong>Citizenship:</strong> {{ applicant.citizenship }}</p>
+        <p><strong>Issued Date:</strong> {{ applicant.issued_date }}</p>
+        <p><strong>Issued District:</strong> {{ applicant.issued_district }}</p>
+        <p><strong>Mobile:</strong> {{ applicant.mobile }}</p>
+
+        {% if is_approved %}
+
+        {% else %}
+            <p><a href="{% url 'update_personalinfo' applicant.pk %}">Edit</a>
+        {% endif %}
+
+        
+
+{% endblock body %}

@@ -1,0 +1,28 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/educationinfo_input.css' %}">{% endblock css %}
+{% block body %}
+<div class="container mt-4">
+    <h2 class="mb-3 text-center">Education Information</h2>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4 shadow-sm">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <strong>Please fix the following errors:</strong>
+                            {{ form.errors }}
+                        </div>
+                    {% endif %}
+
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

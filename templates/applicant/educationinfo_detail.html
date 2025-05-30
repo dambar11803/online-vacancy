@@ -1,0 +1,49 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/educationinfo_detail.css' %}">
+{% endblock css %}
+
+{% block body %}
+<div class="container">
+    <h2>Education Information</h2>
+    
+    <div class="education-details">
+        <div class="detail-card">
+            <strong>Level</strong>
+            <p>{{ applicant.level }}</p>
+        </div>
+        
+        <div class="detail-card">
+            <strong>Faculty</strong>
+            <p>{{ applicant.faculty }}</p>
+        </div>
+        
+        <div class="detail-card">
+            <strong>Course Name</strong>
+            <p>{{ applicant.course_name }}</p>
+        </div>
+        
+        <div class="detail-card">
+            <strong>University Name</strong>
+            <p>{{ applicant.university_name }}</p>
+        </div>
+        
+        <div class="detail-card">
+            <strong>Passed Year</strong>
+            <p>{{ applicant.passed_year }}</p>
+        </div>
+        
+        <div class="detail-card">
+            <strong>Percent/Grade</strong>
+            <p class="grade-highlight">{{ applicant.grade_percent }}</p>
+        </div>
+    </div>
+
+    {% if not is_approved %}
+    <a href="{% url 'update_educationinfo' applicant.pk %}" class="edit-btn">
+        <i class="fas fa-edit"></i> Edit Education
+    </a>
+    {% endif %}
+</div>
+{% endblock body %}

@@ -1,0 +1,83 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %} <link rel="stylesheet" href="{% static 'css/vacancy_create.css' %}"> {% endblock css %}
+{% block body %}
+   <div class="container">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Vacancies</title>
+    <style>
+        .vacancy-form {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .remove-form {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Apply for Vacancies</h1>
+    <form method="post" id="vacancy-form">
+        {% csrf_token %}
+        {{ formset.management_form }}  <!-- Required for formsets -->
+        
+        <div id="forms-container">
+            {% for form in formset %}
+                <div class="vacancy-form">
+                    {{ form.as_p }}
+                    <span class="remove-form" onclick="removeForm(this)">Remove</span>
+                </div>
+            {% endfor %}
+        </div>
+    
+        <!-- Hidden empty form template -->
+        <div id="empty-form" style="display: none;">
+            {{ formset.empty_form.as_p }}
+        </div>
+    
+        <button type="button" onclick="addForm()">Add Another Vacancy</button>
+        <button type="submit">Submit Applications</button>
+    </form>
+    
+    <script>
+        function addForm() {
+            const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+            const formCount = parseInt(totalForms.value);
+            const formsContainer = document.getElementById('forms-container');
+    
+            // Clone the empty form and update the index
+            let newFormHtml = document.getElementById('empty-form').innerHTML.replace(/__prefix__/g, formCount);
+            
+            // Create a new form element
+            const newForm = document.createElement('div');
+            newForm.classList.add('vacancy-form');
+            newForm.innerHTML = newFormHtml + `<span class="remove-form" onclick="removeForm(this)">Remove</span>`;
+    
+            // Append the new form
+            formsContainer.appendChild(newForm);
+    
+            // Update the total forms count
+            totalForms.value = formCount + 1;
+        }
+    
+        function removeForm(element) {
+            const formsContainer = document.getElementById('forms-container');
+            const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+    
+            // Remove the form
+            formsContainer.removeChild(element.parentElement);
+    
+            // Update the total number of forms
+            totalForms.value = parseInt(totalForms.value) - 1;
+        }
+    </script>
+    
+   </div>
+{% endblock body %}

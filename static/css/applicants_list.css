@@ -1,0 +1,103 @@
+/* applicants_list.css */
+
+body {
+    background: #f7f9fc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+}
+
+h3.text-center {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 30px;
+}
+
+.table-section {
+    overflow-x: auto;
+}
+
+table.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: #007bff;
+    color: #fff;
+}
+
+.table thead th {
+    padding: 12px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.table tbody td {
+    padding: 12px;
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid #e6e6e6;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: 0.3s;
+}
+
+.table tbody td a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.table tbody td a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .table thead {
+        display: none;
+    }
+
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+
+    .table tr {
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        padding: 10px;
+    }
+
+    .table td {
+        text-align: left;
+        padding: 10px;
+        position: relative;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+        display: block;
+        margin-bottom: 5px;
+    }
+}

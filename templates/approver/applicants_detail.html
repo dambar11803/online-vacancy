@@ -1,0 +1,128 @@
+{% extends 'approver/approver_base.html' %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/applicants_detail.css' %}"> {% endblock css %} 
+{% block body %}
+<div class="container">
+    <div class="profile-pic py-4">
+        {% if applicant.profile_pic %}
+        <img src="{{ applicant.profile_pic.url }}" alt="Profile Pic" width="150">
+        {% else %}
+        No profile picture uploaded.
+        {% endif %}
+    </div>
+    <h3>Applicant Details</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>Full Name:</th>
+            <td>{{ applicant.first_name }} {{ applicant.last_name }}</td>
+        </tr>
+        <tr>
+            <th>Date of Birth:</th>
+            <td>{{ applicant.dob }}</td>
+        </tr>
+        <tr>
+            <th>Father's Name:</th>
+            <td>{{ applicant.father_name }}</td>
+        </tr>
+        <tr>
+            <th>Citizenship Number:</th>
+            <td>{{ applicant.citizenship }}</td>
+        </tr>
+        <tr>
+            <th>Issued Date:</th>
+            <td>{{ applicant.issued_date }}</td>
+        </tr>
+        <tr>
+            <th>Issued District:</th>
+            <td>{{ applicant.issued_district }}</td>
+        </tr>
+        <tr>
+            <th>Mobile:</th>
+            <td>{{ applicant.mobile }}</td>
+        </tr>
+    </table>
+
+    <h3>Education Information</h3>
+    {% if education_infos %}
+    <table class="table table-bordered">
+        <tr>
+            <th>Level</th>
+            <th>Faculty</th>
+            <th>University</th>
+            <th>College</th>
+            <th>Passed Year</th>
+            <th>Grade %</th>
+            <th>Transcripts</th>
+        </tr>
+        {% for edu in education_infos %}
+        <tr>
+            <td>{{ edu.level }}</td>
+            <td>{{ edu.faculty }}</td>
+            <td>{{ edu.university_name }}</td>
+            <td>{{ edu.college_name }}</td>
+            <td>{{ edu.passed_year }}</td>
+            <td>{{ edu.grade_percent }}</td>
+            <td>
+                <a href="{{ edu.upload_transcript1.url }}" target="_blank">Transcript 1</a> |
+                <a href="{{ edu.upload_transcript2.url }}" target="_blank">Transcript 2</a> |
+                <a href="{{ edu.upload_character.url }}" target="_blank">Character Certificate</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No education details available.</p>
+    {% endif %}
+
+    <h3>Vacancy Information</h3>
+    {% if vacancy_infos %}
+    <table class="table table-bordered">
+        <tr>
+            <th>Position</th>
+            <th>Group</th>
+            <th>Created At</th>
+            <th>Payment Amount</th>
+            <th>Status</th>
+        </tr>
+        {% for vacancy in vacancy_infos %}
+        <tr>
+            <td>{{ vacancy.vacancy_position }}</td>
+            <td>{{ vacancy.vacancy_group }}</td>
+            <td>{{ vacancy.vacancy_created_at }}</td>
+            <td>{{ vacancy.payment_amount }}</td>
+            <td>{% if vacancy.is_approved %} Approved {% else %} Pending {% endif %}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No vacancy details available.</p>
+    {% endif %}
+
+    <a href="{% url 'applications_list' %}" class="py-5">Back to List</a>
+
+    <!-- Action Buttons -->
+     {% if vacancy_infos %}
+        {% if vacancy_infos.vacancy_status == 'Approved' %}
+            pass 
+        {% else %}    
+            {% if vacancy_infos %}
+                {% with first_vacancy=vacancy_infos.0 %}
+                    {% if not first_vacancy.is_approved %}
+                        <div class="action-btns text-center">
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" name="action" value="approve">Approve</button>
+                                <button type="submit" name="action" value="reject">Reject</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                {% endwith %}
+            {% endif %}
+         {% endif %}   
+     {% endif %}
+
+     
+
+</div>
+{% endblock body %}

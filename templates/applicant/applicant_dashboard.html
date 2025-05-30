@@ -1,0 +1,132 @@
+{% extends 'applicant/applicant_base.html' %}
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'css/applicant_dashboard.css' %}">{% endblock css %}
+{% block body %}
+<div class="dashboard-container">
+  {% if applicant %}
+    <!-- Personal Information Section -->
+    <section class="dashboard-section personal-info">
+        <h2><i class="fas fa-user"></i> Personal Information</h2>
+        <div class="profile-header">
+            <div class="profile-pic">
+                {% if applicant.profile_pic %}
+                    <img src="{{ applicant.profile_pic.url }}" alt="Profile Picture">
+                {% else %}
+                    <div class="default-pic"><i class="fas fa-user-circle"></i></div>
+                {% endif %}
+            </div>
+            <div class="profile-details">
+                <h3>{{ applicant.first_name }} {{ applicant.last_name }}</h3>
+                <p><i class="fas fa-envelope"></i> {{ applicant.user.email }}</p>
+                <p><i class="fas fa-phone"></i> {{ applicant.mobile }}</p>
+            </div>
+        </div>
+        
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="info-label">Date of Birth:</span>
+                <span class="info-value">{{ applicant.dob|date:"Y-m-d" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Father's Name:</span>
+                <span class="info-value">{{ applicant.father_name }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Citizenship No:</span>
+                <span class="info-value">{{ applicant.citizenship }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Issued Date:</span>
+                <span class="info-value">{{ applicant.issued_date|date:"Y-m-d" }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Issued District:</span>
+                <span class="info-value">{{ applicant.issued_district }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Citizenship Document:</span>
+                <a href="{{ applicant.upload_citizenship.url }}" target="_blank" class="doc-link">
+                    <i class="fas fa-file-pdf"></i> View Document
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Information Section -->
+    <section class="dashboard-section education-info">
+        <h2><i class="fas fa-graduation-cap"></i> Education Information</h2>
+        
+        {% for edu in education_infos %}
+        <div class="education-card">
+            <div class="edu-header">
+                <h3>{{ edu.get_level_display }} in {{ edu.get_faculty_display }}</h3>
+                <span class="passed-year">{{ edu.passed_year }}</span>
+            </div>
+            
+            <div class="edu-details">
+                <p><strong>University:</strong> {{ edu.get_university_name_display }}</p>
+                <p><strong>College:</strong> {{ edu.college_name }}</p>
+                <p><strong>Course:</strong> {{ edu.course_name }}</p>
+                <p><strong>Grade:</strong> {{ edu.grade_percent }}%</p>
+            </div>
+            
+            <div class="edu-documents">
+                <a href="{{ edu.upload_transcript1.url }}" target="_blank" class="doc-btn">
+                    <i class="fas fa-file-alt"></i> Transcript 1
+                </a>
+                <a href="{{ edu.upload_transcript2.url }}" target="_blank" class="doc-btn">
+                    <i class="fas fa-file-alt"></i> Transcript 2
+                </a>
+                <a href="{{ edu.upload_character.url }}" target="_blank" class="doc-btn">
+                    <i class="fas fa-file-certificate"></i> Character
+                </a>
+                {% if edu.upload_license %}
+                <a href="{{ edu.upload_license.url }}" target="_blank" class="doc-btn">
+                    <i class="fas fa-id-card"></i> License
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    <!-- Vacancy Applications Section -->
+    <section class="dashboard-section vacancy-info">
+        <h2><i class="fas fa-briefcase"></i> Job Applications</h2>
+        
+        {% for vacancy in vacancy_infos %}
+        <div class="vacancy-card {% if vacancy.is_approved %}approved{% elif vacancy.vacancy_status == 'Rejected' %}rejected{% else %}pending{% endif %}">
+            <div class="vacancy-header">
+                <h3>{{ vacancy.get_vacancy_position_display }}</h3>
+                <span class="status-badge">{{ vacancy.vacancy_status }}</span>
+            </div>
+            
+            <div class="vacancy-details">
+                <p><strong>Group:</strong> {{ vacancy.get_vacancy_group_display }}</p>
+                <p><strong>Applied On:</strong> {{ vacancy.vacancy_created_at|date:"Y-m-d" }}</p>
+                
+                {% if vacancy.is_approved %}
+                <p><strong>Approved On:</strong> {{ vacancy.approved_at|date:"Y-m-d" }}</p>
+                {% endif %}
+                
+                <div class="payment-info">
+                    <p><strong>Payment:</strong> 
+                        {% if vacancy.is_payment_made %}
+                            <span class="paid">Paid (Rs. {{ vacancy.payment_amount }})</span>
+                        {% else %}
+                            <span class="unpaid">Pending (Rs. {{ vacancy.payment_amount }})</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+    
+    
+  {% else %}
+    <h2 class="text-center py-5">Applicant Dashboard</h2>
+    <p class="text-center">No applicant information found.</p>
+  {% endif %}   
+</div>
+{% endblock body %}
